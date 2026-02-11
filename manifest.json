@@ -1,0 +1,16 @@
+{
+  "name": "Sustainability Impact Tracker",
+  "short_name": "EcoTracker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071018",
+  "theme_color": "#071018",
+  "description": "Track your personal sustainability impact, set goals, and get actionable insights.",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,296 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Sustainability Impact Tracker</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a
+          href="#/dashboard"
+          id="brand-link"
+          class="brand brand-link"
+          role="link"
+          aria-label="Go to Dashboard"
+        >
+          <a href="#hero" class="container-logo"></a>
+          <span class="brand-title">Sustainability Impact</span>
+        </a>
+        <nav class="main-nav">
+          <a href="#/">Dashboard</a>
+          <a href="#/calculators">Calculators</a>
+          <a href="#/progress">Progress</a>
+          <a href="#/goals">Goals</a>
+          <a href="#/gamification">Gamification</a>
+          <a href="#/insights">Insights</a>
+          <button
+            id="dark-toggle"
+            aria-pressed="false"
+            title="Toggle dark mode"
+          >
+            🌙
+          </button>
+          <a href="#/auth" class="auth-link">Log in</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section id="dashboard" class="page">
+        <h2>Personal Dashboard</h2>
+
+        <!-- Row 1: High-Level Impact Overview -->
+        <div class="dashboard-row">
+          <div class="card footprint-card">
+            <h3>Total Footprint</h3>
+            <div class="footprint-values">
+              <div>
+                <strong id="total-this-month">— kg CO2e</strong>
+                <div class="muted">This month</div>
+              </div>
+              <div>
+                <strong id="total-prev-month">— kg CO2e</strong>
+                <div class="muted">Previous period</div>
+              </div>
+            </div>
+            <div id="overshoot-date" class="muted">Earth Overshoot Date: —</div>
+          </div>
+
+          <div class="card gauges">
+            <h3>Categorized Impact</h3>
+            <div class="gauge-list">
+              <div class="gauge" id="gauge-environment">
+                <div class="gauge-label">Environmental</div>
+                <div class="gauge-value">—</div>
+              </div>
+              <div class="gauge" id="gauge-social">
+                <div class="gauge-label">Social</div>
+                <div class="gauge-value">—</div>
+              </div>
+              <div class="gauge" id="gauge-economic">
+                <div class="gauge-label">Economic</div>
+                <div class="gauge-value">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card score-card-mini">
+            <h3>Eco-Credit</h3>
+            <div id="eco-score">—</div>
+            <div class="muted">Personal score</div>
+          </div>
+        </div>
+
+        <!-- Row 2: Behavioral Tracking & Habits -->
+        <div class="dashboard-row">
+          <div class="card logger-card">
+            <h3>Daily Activity Logger</h3>
+            <form id="logger-form">
+              <label
+                >Action<select id="logger-action">
+                  <option value="drive">Drive</option>
+                  <option value="public_transit">Public transit</option>
+                  <option value="bike">Bike</option>
+                  <option value="meat_meal">Meat meal</option>
+                  <option value="veg_meal">Vegetarian meal</option>
+                </select></label
+              >
+              <label
+                >Count<input id="logger-count" type="number" value="1" min="1"
+              /></label>
+              <button type="submit">Log activity</button>
+            </form>
+            <div id="logger-status" class="muted"></div>
+          </div>
+
+          <div class="card streaks-card">
+            <h3>Habit Streaks & Badges</h3>
+            <div id="streaks-list" class="muted">No habits yet.</div>
+          </div>
+
+          <div class="card goal-progress-card">
+            <h3>Progressive Goal Tracker</h3>
+            <div id="goal-progress-list"></div>
+          </div>
+        </div>
+
+        <!-- Row 3: Actionable Insights & Benchmarking -->
+        <div class="dashboard-row">
+          <div class="card peer-card">
+            <h3>Peer Comparison</h3>
+            <div id="peer-compare" class="muted">Loading benchmarks...</div>
+          </div>
+
+          <div class="card rec-card">
+            <h3>Top Impact Recommendation</h3>
+            <div id="top-recommendation" class="muted">—</div>
+          </div>
+
+          <div class="card savings-card">
+            <h3>Financial Savings</h3>
+            <div id="financial-savings">—</div>
+          </div>
+        </div>
+
+        <!-- Row 4: Interactive Visualization Tools -->
+        <div class="dashboard-row">
+          <div class="card" style="flex: 2">
+            <h3>Time-Series (Energy)</h3>
+            <canvas id="dashboard-chart-line" height="140"></canvas>
+            <div class="metric-toggles">
+              <button data-metric="co2" class="metric-toggle active">
+                kg CO2
+              </button>
+              <button data-metric="trees" class="metric-toggle">
+                Tree eq.
+              </button>
+            </div>
+          </div>
+
+          <div class="card map-card">
+            <h3>Geographical Heatmap</h3>
+            <div id="map-placeholder" class="muted">
+              Map view placeholder (requires location data)
+            </div>
+            <div class="muted">Metric: <span id="map-metric">kg CO2</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="calculators" class="page" style="display: none">
+        <h2>Impact Calculators</h2>
+        <div class="grid three">
+          <div class="card">
+            <h3>Travel</h3>
+            <label
+              >Distance (km)<input id="calc-travel-km" type="number" value="10"
+            /></label>
+            <label
+              >Mode<select id="calc-travel-mode">
+                <option value="car">Car</option>
+                <option value="bus">Bus</option>
+                <option value="train">Train</option>
+                <option value="plane">Plane</option>
+              </select></label
+            >
+            <button id="calc-travel-do">Calculate</button>
+            <div id="calc-travel-result" class="muted">
+              Result will show here
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Diet</h3>
+            <label
+              >Meal type<select id="calc-diet-type">
+                <option value="omnivore">Omnivore</option>
+                <option value="vegetarian">Vegetarian</option>
+                <option value="vegan">Vegan</option>
+              </select></label
+            >
+            <label
+              >Meals per week<input
+                id="calc-diet-meals"
+                type="number"
+                value="14"
+            /></label>
+            <button id="calc-diet-do">Calculate</button>
+            <div id="calc-diet-result" class="muted"></div>
+          </div>
+
+          <div class="card">
+            <h3>Home (Energy)</h3>
+            <label
+              >Monthly kWh<input id="calc-home-kwh" type="number" value="300"
+            /></label>
+            <button id="calc-home-do">Calculate</button>
+            <div id="calc-home-result" class="muted"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="progress" class="page" style="display: none">
+        <h2>Progress Trackers</h2>
+        <div class="card">
+          <h3>Week-By-Week CO2</h3>
+          <canvas id="chart-line" height="120"></canvas>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>Category Breakdown</h3>
+            <canvas id="chart-pie" height="160"></canvas>
+          </div>
+          <div class="card">
+            <h3>Monthly comparison</h3>
+            <canvas id="chart-bar" height="160"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section id="goals" class="page" style="display: none">
+        <h2>Goal Setting & Pledges</h2>
+        <div class="card">
+          <form id="goal-form">
+            <label>Title<input id="goal-title" required /></label>
+            <label
+              >Target reduction (%)<input
+                id="goal-target"
+                type="number"
+                min="1"
+                max="100"
+                value="20"
+            /></label>
+            <label>By date<input id="goal-date" type="date" /></label>
+            <button>Create pledge</button>
+          </form>
+        </div>
+        <div id="goals-list"></div>
+      </section>
+
+      <section id="gamification" class="page" style="display: none">
+        <h2>Gamification & Community</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Your Level</h3>
+            <div id="user-level">Eco Novice</div>
+            <div id="badges" class="badges"></div>
+          </div>
+          <div class="card">
+            <h3>Local Leaderboard</h3>
+            <ol id="leaderboard"></ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="insights" class="page" style="display: none">
+        <h2>Actionable Insights</h2>
+        <div id="insights-list"></div>
+      </section>
+
+      <section id="auth" class="page" style="display: none">
+        <h2>Sign in</h2>
+        <div class="card">
+          <form id="login-form">
+            <label>Name<input id="login-name" required /></label>
+            
+            <label>Email<input id="login-email" required /></label>
+            <button>Sign in</button>
+          </form>
+          <div id="login-status" class="muted"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">Built for demo — local data only.</div>
+    </footer>
+
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#071018" />
+    <link rel="preload" href="./images/logo.png" as="image" />
+    <script src="./script.js" defer></script>
+  </body>
+</html>
