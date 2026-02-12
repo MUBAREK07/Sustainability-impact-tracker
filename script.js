@@ -159,22 +159,30 @@
   }
 
   function wireTheme() {
-    // initialize theme from storage or prefers-color-scheme
-    const stored = localStorage.getItem("sit_theme");
-    if (stored) applyTheme(stored);
-    else {
-      const prefersDark =
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
-      applyTheme(prefersDark ? "dark" : "light");
+  const btn = document.getElementById("dark-toggle");
+
+  function setTheme(mode) {
+    if (mode === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-    const btn = document.getElementById("dark-toggle");
-    if (!btn) return;
+    localStorage.setItem("sit_theme", mode);
+  }
+
+  // initial
+  const saved = localStorage.getItem("sit_theme") || "light";
+  setTheme(saved);
+
+  // toggle
+  if (btn) {
     btn.addEventListener("click", () => {
       const isDark = document.documentElement.classList.contains("dark");
-      applyTheme(isDark ? "light" : "dark");
+      setTheme(isDark ? "light" : "dark");
     });
   }
+}
+
 
   // ----------------- Header scroll behavior -----------------
   function handleHeaderOnScroll() {

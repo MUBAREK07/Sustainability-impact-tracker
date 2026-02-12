@@ -1,8 +1,9 @@
+
 :root {
   --bg: #f6faf6;
   --card: #ffffff;
   --accent: #2b9f6a;
-  --muted: #6b7280;
+  --muted: #64748b;
   --text: #0f172a;
   --subtle: #f0f6f4;
   --input-bg: #ffffff;
@@ -11,17 +12,6 @@
   /* header backgrounds when scrolled (75% opacity) */
   --header-bg-light: rgba(255, 255, 255, 0.4);
   --header-bg-dark: rgba(7, 20, 24, 0.4);
-}
-.dark {
-  --bg: #071018;
-  /* make cards slightly lighter than background to improve contrast */
-  --card: #0b2330;
-  --accent: #54d07a;
-  --muted: #9ca8b3;
-  --text: #e6f1ef;
-  --subtle: rgba(255, 255, 255, 0.04);
-  --input-bg: #071821;
-  --border: rgba(255, 255, 255, 0.08);
 }
 * {
   box-sizing: border-box;
@@ -55,13 +45,10 @@ body {
   will-change: opacity, background !important;
 }
 .site-header.scrolled {
-  background: var(--header-bg-light);
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-}
-.dark .site-header.scrolled {
-  background: var(--header-bg-dark);
 }
 .site-header h1 {
   margin: 0;
@@ -134,10 +121,6 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.06);
   padding: 4px;
 }
-.dark #brand-logo {
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
 /* In case the image fails, show a neutral placeholder box */
 #brand-logo:empty {
   background: var(--subtle);
@@ -190,13 +173,18 @@ body {
 .card {
   background: var(--card);
   padding: 12px;
+  border: 1px solid var(--border);
   border-radius: 8px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
   min-width: 220px;
 }
-/* Improve link contrast in dark mode */
-.dark a {
-  color: var(--accent);
+/* Links */
+a {
+  color: var(--text);
+}
+/* Charts canvas */
+canvas {
+  background: transparent;
 }
 h2 {
   margin-top: 14px;
@@ -454,4 +442,42 @@ body,
   transition:
     background-color 180ms linear,
     color 180ms linear;
+}
+/* ================= DARK MODE ================= */
+
+html.dark,
+html.dark body {
+  background: #020617 !important;
+  color: #ffffff !important;
+}
+
+/* Force all text white */
+html.dark * {
+  color: #ffffff !important;
+}
+
+html.dark .card {
+  background: #020617 !important;
+  border: 1px solid #1e293b;
+}
+
+html.dark input,
+html.dark select {
+  background: #020617 !important;
+  color: #ffffff !important;
+  border: 1px solid #334155;
+}
+
+html.dark button {
+  background: #A4DE49 !important;
+  color: #020617 !important;
+}
+
+html.dark a {
+  color: #A4DE49 !important;
+}
+
+html.dark .badge {
+    background: var(--text);
+    color: var(--subtle);
 }
