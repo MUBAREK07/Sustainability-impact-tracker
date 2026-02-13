@@ -25,12 +25,69 @@
           role="link"
           aria-label="Go to Dashboard"
         >
-          <a href="#hero" class="container-logo"></a>
+          <img
+            id="brand-logo"
+            src="./images/logo.png"
+            alt="Sustainability Impact logo"
+          />
           <span class="brand-title">Sustainability Impact</span>
         </a>
-        <nav class="main-nav">
-          <a href="#/">Dashboard</a>
-          <a href="#/calculators">Calculators</a>
+        <button
+          id="nav-toggle"
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+        >
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+        <nav id="primary-nav" class="main-nav">
+          <div id="nav-dashboard-item" class="nav-dashboard-item">
+            <a id="nav-dashboard-link" class="nav-dashboard-link" href="#/"
+              >Dashboard</a
+            >
+            <div class="dashboard-nav-submenu" role="menu">
+              <a href="#/" data-dashboard-panel="dashboard-overview"
+                >Impact Overview</a
+              >
+              <a href="#/" data-dashboard-panel="dashboard-activity"
+                >Activity & Habits</a
+              >
+              <a href="#/" data-dashboard-panel="dashboard-insights"
+                >Recommendations</a
+              >
+              <a href="#/" data-dashboard-panel="dashboard-visuals"
+                >Charts & Heatmap</a
+              >
+            </div>
+          </div>
+          <div id="nav-calculators-item" class="nav-dashboard-item">
+            <a
+              id="nav-calculators-link"
+              class="nav-dashboard-link"
+              href="#/calculators"
+              >Calculators</a
+            >
+            <div class="dashboard-nav-submenu" role="menu">
+              <a href="#/calculators" data-calculators-panel="calculators-core"
+                >Core Calculators</a
+              >
+              <a href="#/calculators" data-calculators-panel="calculators-data"
+                >Simplified Data Entry</a
+              >
+              <a
+                href="#/calculators"
+                data-calculators-panel="calculators-scenario"
+                >Scenario Modeling</a
+              >
+              <a href="#/calculators" data-calculators-panel="calculators-lca"
+                >Life Cycle Assessment</a
+              >
+            </div>
+          </div>
           <a href="#/progress">Progress</a>
           <a href="#/goals">Goals</a>
           <a href="#/gamification">Gamification</a>
@@ -52,7 +109,7 @@
         <h2>Personal Dashboard</h2>
 
         <!-- Row 1: High-Level Impact Overview -->
-        <div class="dashboard-row">
+        <div class="dashboard-row dashboard-panel" id="dashboard-overview">
           <div class="card footprint-card">
             <h3>Total Footprint</h3>
             <div class="footprint-values">
@@ -94,7 +151,7 @@
         </div>
 
         <!-- Row 2: Behavioral Tracking & Habits -->
-        <div class="dashboard-row">
+        <div class="dashboard-row dashboard-panel" id="dashboard-activity">
           <div class="card logger-card">
             <h3>Daily Activity Logger</h3>
             <form id="logger-form">
@@ -127,7 +184,7 @@
         </div>
 
         <!-- Row 3: Actionable Insights & Benchmarking -->
-        <div class="dashboard-row">
+        <div class="dashboard-row dashboard-panel" id="dashboard-insights">
           <div class="card peer-card">
             <h3>Peer Comparison</h3>
             <div id="peer-compare" class="muted">Loading benchmarks...</div>
@@ -145,10 +202,10 @@
         </div>
 
         <!-- Row 4: Interactive Visualization Tools -->
-        <div class="dashboard-row">
-          <div class="card" style="flex: 2">
+        <div class="dashboard-row dashboard-panel" id="dashboard-visuals">
+          <div class="card dashboard-timeseries-card">
             <h3>Time-Series (Energy)</h3>
-            <canvas id="dashboard-chart-line" height="140"></canvas>
+            <canvas id="dashboard-chart-line" height="80"></canvas>
             <div class="metric-toggles">
               <button data-metric="co2" class="metric-toggle active">
                 kg CO2
@@ -161,8 +218,12 @@
 
           <div class="card map-card">
             <h3>Geographical Heatmap</h3>
-            <div id="map-placeholder" class="muted">
-              Map view placeholder (requires location data)
+            <div id="map-placeholder" aria-label="Interactive location map"></div>
+            <div class="map-actions">
+              <button id="map-locate-btn" type="button">Locate me</button>
+            </div>
+            <div id="map-status" class="muted">
+              Click "Locate me" to map your current position.
             </div>
             <div class="muted">Metric: <span id="map-metric">kg CO2</span></div>
           </div>
@@ -171,70 +232,217 @@
 
       <section id="calculators" class="page" style="display: none">
         <h2>Impact Calculators</h2>
-        <div class="grid three">
-          <div class="card">
-            <h3>Travel</h3>
-            <label
-              >Distance (km)<input id="calc-travel-km" type="number" value="10"
-            /></label>
-            <label
-              >Mode<select id="calc-travel-mode">
-                <option value="car">Car</option>
-                <option value="bus">Bus</option>
-                <option value="train">Train</option>
-                <option value="plane">Plane</option>
-              </select></label
-            >
-            <button id="calc-travel-do">Calculate</button>
-            <div id="calc-travel-result" class="muted">
-              Result will show here
+        <div class="calculators-panel" id="calculators-core">
+          <div class="grid three">
+            <div class="card">
+              <h3>Travel</h3>
+              <label
+                >Distance (km)<input id="calc-travel-km" type="number" value="10"
+              /></label>
+              <label
+                >Mode<select id="calc-travel-mode">
+                  <option value="car">Car</option>
+                  <option value="bus">Bus</option>
+                  <option value="train">Train</option>
+                  <option value="plane">Plane</option>
+                </select></label
+              >
+              <button id="calc-travel-do">Calculate</button>
+              <div id="calc-travel-result" class="muted">
+                Result will show here
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Diet</h3>
+              <label
+                >Meal type<select id="calc-diet-type">
+                  <option value="omnivore">Omnivore</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="vegan">Vegan</option>
+                </select></label
+              >
+              <label
+                >Meals per week<input
+                  id="calc-diet-meals"
+                  type="number"
+                  value="14"
+              /></label>
+              <button id="calc-diet-do">Calculate</button>
+              <div id="calc-diet-result" class="muted"></div>
+            </div>
+
+            <div class="card">
+              <h3>Home (Energy)</h3>
+              <label
+                >Monthly kWh<input id="calc-home-kwh" type="number" value="300"
+              /></label>
+              <button id="calc-home-do">Calculate</button>
+              <div id="calc-home-result" class="muted"></div>
             </div>
           </div>
+        </div>
 
-          <div class="card">
-            <h3>Diet</h3>
-            <label
-              >Meal type<select id="calc-diet-type">
-                <option value="omnivore">Omnivore</option>
-                <option value="vegetarian">Vegetarian</option>
-                <option value="vegan">Vegan</option>
-              </select></label
-            >
-            <label
-              >Meals per week<input
-                id="calc-diet-meals"
-                type="number"
-                value="14"
-            /></label>
-            <button id="calc-diet-do">Calculate</button>
-            <div id="calc-diet-result" class="muted"></div>
+        <div class="calculators-panel calculators-panel-hidden" id="calculators-data">
+          <div class="grid studio-grid">
+            <div class="card">
+              <h3>Simplified Data Entry</h3>
+              <form id="prescreen-form" class="stack-form two-col-form">
+                <label
+                  >Electricity (kWh/month)<input
+                    id="pre-electricity"
+                    type="number"
+                    min="0"
+                    step="1"
+                /></label>
+                <label
+                  >Water (m3/month)<input
+                    id="pre-water"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                /></label>
+                <label
+                  >Fuel (L/month)<input
+                    id="pre-fuel"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                /></label>
+                <label
+                  >Waste (kg/month)<input
+                    id="pre-waste"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                /></label>
+                <label
+                  >Recycling rate (%)<input
+                    id="pre-recycle-rate"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                /></label>
+                <label
+                  >Raw materials (kg/month)<input
+                    id="pre-materials"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                /></label>
+                <label
+                  >Logistics shipping (km/month)<input
+                    id="pre-logistics-km"
+                    type="number"
+                    min="0"
+                    step="1"
+                /></label>
+                <label
+                  >Employee commute (km/week)<input
+                    id="pre-commute-km"
+                    type="number"
+                    min="0"
+                    step="1"
+                /></label>
+                <button type="submit">Save baseline profile</button>
+              </form>
+              <div id="prescreen-status" class="muted">
+                Add baseline values to improve your model outputs.
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div class="card">
-            <h3>Home (Energy)</h3>
-            <label
-              >Monthly kWh<input id="calc-home-kwh" type="number" value="300"
-            /></label>
-            <button id="calc-home-do">Calculate</button>
-            <div id="calc-home-result" class="muted"></div>
+        <div
+          class="calculators-panel calculators-panel-hidden"
+          id="calculators-scenario"
+        >
+          <div class="grid studio-grid">
+            <div class="card">
+              <h3>Scenario Modeling</h3>
+              <form id="scenario-form" class="stack-form">
+                <label
+                  >Energy source<select id="scenario-energy">
+                    <option value="grid">Grid electricity</option>
+                    <option value="renewable">Renewable electricity</option>
+                  </select></label
+                >
+                <label
+                  >Material choice<select id="scenario-materials">
+                    <option value="virgin">Virgin materials</option>
+                    <option value="recycled">Recycled materials</option>
+                  </select></label
+                >
+                <label
+                  >Shipping mode<select id="scenario-logistics">
+                    <option value="truck">Truck</option>
+                    <option value="rail">Rail</option>
+                    <option value="ship">Sea freight</option>
+                  </select></label
+                >
+                <label
+                  >Commute policy<select id="scenario-commute">
+                    <option value="private">Mostly private vehicle</option>
+                    <option value="public">Public transit support</option>
+                    <option value="remote">Hybrid/remote work</option>
+                  </select></label
+                >
+                <button type="submit">Run scenario</button>
+              </form>
+              <div id="scenario-result" class="muted">
+                Choose scenario settings and click Run scenario.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calculators-panel calculators-panel-hidden" id="calculators-lca">
+          <div class="grid">
+            <div class="card">
+              <h3>Life Cycle Assessment (LCA)</h3>
+              <div id="lca-stage-list" class="lca-stage-list"></div>
+              <div id="lca-total" class="muted"></div>
+            </div>
           </div>
         </div>
       </section>
 
       <section id="progress" class="page" style="display: none">
         <h2>Progress Trackers</h2>
+        <div class="card progress-time-track">
+          <div class="progress-time-head">
+            <h3>Time Track</h3>
+            <select id="progress-range" aria-label="Select progress time range">
+              <option value="7">Last 7 days</option>
+              <option value="30">Last 30 days</option>
+              <option value="90">Last 3 months</option>
+              <option value="180" selected>Last 6 months</option>
+              <option value="365">Last 12 months</option>
+            </select>
+          </div>
+          <div id="progress-track-summary" class="muted">
+            Showing your footprint trend over time.
+          </div>
+        </div>
         <div class="card">
           <h3>Week-By-Week CO2</h3>
-          <canvas id="chart-line" height="120"></canvas>
+          <canvas id="chart-line" height="90"></canvas>
         </div>
         <div class="grid">
           <div class="card">
             <h3>Category Breakdown</h3>
-            <canvas id="chart-pie" height="160"></canvas>
+            <canvas id="chart-pie" height="120"></canvas>
           </div>
           <div class="card">
             <h3>Monthly comparison</h3>
-            <canvas id="chart-bar" height="160"></canvas>
+            <canvas id="chart-bar" height="120"></canvas>
+          </div>
+        </div>
+        <div class="card benchmark-card">
+          <h3>Benchmarking</h3>
+          <div id="benchmark-summary" class="muted">
+            Run calculators to generate benchmark comparisons.
           </div>
         </div>
       </section>
@@ -276,25 +484,122 @@
 
       <section id="insights" class="page" style="display: none">
         <h2>Actionable Insights</h2>
+        <div class="card">
+          <h3>Action Plan</h3>
+          <div id="insight-action-plan" class="muted">
+            Suggestions will update after calculations and scenario runs.
+          </div>
+        </div>
         <div id="insights-list"></div>
       </section>
 
       <section id="auth" class="page" style="display: none">
-        <h2>Sign in</h2>
-        <div class="card">
-          <form id="login-form">
-            <label>Name<input id="login-name" required /></label>
-            
-            <label>Email<input id="login-email" required /></label>
-            <button>Sign in</button>
-          </form>
-          <div id="login-status" class="muted"></div>
+        <div class="auth-shell">
+          <div class="auth-left">
+            <h2 class="auth-wordmark">Sustainability Impact</h2>
+            <p class="auth-tagline">
+              Connect, track your footprint, and build better sustainability
+              habits every day.
+            </p>
+          </div>
+
+          <div class="auth-right">
+            <div class="card auth-card">
+              <form id="login-form" class="auth-form">
+                <input
+                  id="login-contact"
+                  type="text"
+                  placeholder="Email or phone number"
+                  autocomplete="username"
+                  required
+                />
+                <input
+                  id="login-password"
+                  type="password"
+                  placeholder="Password"
+                  autocomplete="current-password"
+                  required
+                />
+                <button type="submit" class="auth-login-btn">Log in</button>
+                <a href="#" id="forgot-password" class="auth-help-link"
+                  >Forgot password?</a
+                >
+                <div class="auth-divider"></div>
+                <button type="button" id="show-signup" class="auth-create-btn">
+                  Create new account
+                </button>
+              </form>
+
+              <form id="signup-form" class="auth-form" hidden>
+                <h3>Create an account</h3>
+                <label
+                  >Full name
+                  <input
+                    id="signup-name"
+                    type="text"
+                    placeholder="Your full name"
+                    autocomplete="name"
+                    required
+                  />
+                </label>
+                <label
+                  >Sign up with
+                  <select id="signup-method">
+                    <option value="email">Email</option>
+                    <option value="phone">Phone number</option>
+                  </select>
+                </label>
+                <label
+                  id="signup-contact-wrap"
+                  ><span id="signup-contact-label">Email</span>
+                  <input
+                    id="signup-contact"
+                    type="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                  />
+                </label>
+                <label
+                  >Password
+                  <input
+                    id="signup-password"
+                    type="password"
+                    placeholder="Create password"
+                    autocomplete="new-password"
+                    minlength="6"
+                    required
+                  />
+                </label>
+                <label
+                  >Confirm password
+                  <input
+                    id="signup-password-confirm"
+                    type="password"
+                    placeholder="Confirm password"
+                    autocomplete="new-password"
+                    minlength="6"
+                    required
+                  />
+                </label>
+                <button type="submit" class="auth-login-btn">Sign up</button>
+                <button type="button" id="show-login" class="auth-back-btn">
+                  Already have an account? Log in
+                </button>
+              </form>
+
+              <div id="login-status" class="auth-status"></div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <div class="wrap">Built for demo — local data only.</div>
+      <div class="wrap">
+        Track, benchmark, and reduce your sustainability impact with actionable
+        insights.
+      </div>
     </footer>
 
     <link rel="manifest" href="/manifest.json" />

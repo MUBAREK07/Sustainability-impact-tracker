@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sit-static-v1'
+const CACHE_NAME = 'sit-static-v3'
 const OFFLINE_URL = '/'
 const ASSETS = [
   '/',
@@ -35,11 +35,14 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  // For navigation or static assets: cache-first, then network
+  // For navigation/static assets: network-first to avoid stale CSS/JS after updates
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request).then((res) => {
-      // put in cache for future
-      return caches.open(CACHE_NAME).then(cache => { cache.put(event.request, res.clone()); return res })
-    }).catch(() => caches.match(OFFLINE_URL)))
+    fetch(event.request)
+      .then((res) => {
+        const copy = res.clone()
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy))
+        return res
+      })
+      .catch(() => caches.match(event.request).then((cached) => cached || caches.match(OFFLINE_URL)))
   )
 })
